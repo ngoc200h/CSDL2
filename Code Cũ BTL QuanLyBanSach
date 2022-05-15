@@ -1,0 +1,679 @@
+------------------------QUAN LI BAN HANG SACH-----------------------------------
+-----Tao bang
+---1. Tao bang SÁCH 
+CREATE TABLE SACH
+(
+   MaSach NVARCHAR2(20) 
+   CONSTRAINT s_pk PRIMARY KEY ,
+   TenSach NVARCHAR2(50),
+   GiaSach NUMBER,
+   NamXB DATE, 
+   Ngaynhap DATE,
+   MaTG NVARCHAR2(20),
+   MaTheLoai NVARCHAR2(20),
+   MaNXB NVARCHAR2(20),
+CONSTRAINT tgs_fk FOREIGN KEY (MaTG) REFERENCES TACGIA(MaTG),
+CONSTRAINT tls_fk FOREIGN KEY (MaTheLoai) REFERENCES THELOAI(MaTheLoai),
+CONSTRAINT nxbs_fk FOREIGN KEY (MaNXB) REFERENCES NHAXUATBAN(MaNXB));
+
+DROP TABLE SACH CASCADE CONSTRAINTS;
+------------------------------------------------------------------------------------
+--- 2. Tao bang TAC GIA
+CREATE TABLE TACGIA
+(
+  MaTG nvarchar2(20)
+  CONSTRAINT tg_pk PRIMARY KEY ,
+  TenTG nvarchar2(20),
+  ThongTinLL nvarchar2(50));
+-----------------------------------------------------------------------------------
+
+--- 3. Tao bang THE LOAI 
+CREATE TABLE THELOAI
+(
+ MaTheLoai nvarchar2(20),
+ TenTheLoai nvarchar2(20),
+CONSTRAINT tl_pk PRIMARY KEY (MaTheLoai));
+-----------------------------------------------------
+
+--- 4. Tao bang NHA XUAT BAN
+CREATE TABLE NHAXUATBAN
+(
+  MaNXB nvarchar2(20),
+  TenNXB nvarchar2(30),
+  DiaChiNXB nvarchar2(30),
+CONSTRAINT nxb_pk PRIMARY KEY (MaNXB));
+------------------------------------------------------------------------
+
+--- 5. Tao bang CHI TIET HOA DON
+CREATE TABLE CHITIETHOADON
+(
+   MaSach NVARCHAR2(20),
+   MaHD nvarchar2(20),
+   SLBan number,
+CONSTRAINT cthd_pk PRIMARY KEY ( MaSach , MaHD ) ,
+CONSTRAINT cthds_fk FOREIGN KEY (MaSach) REFERENCES SACH(MaSach),
+CONSTRAINT cthdhd_fk FOREIGN KEY (MaHD) REFERENCES HOADON(MaHD));
+ 
+ drop table CHITIETHOADON;
+ -------------------------------------------------------------------------------------
+ --- 6. Tao bang HOA DON
+ CREATE TABLE HOADON
+(
+  MaHD nvarchar2(20) 
+  CONSTRAINT hd_pk PRIMARY KEY ,
+  Ngaylap date,
+  TongTien number ,
+  MaNV nvarchar2(20),
+  MaKH nvarchar2(20),
+  MaCK nvarchar2(30),
+CONSTRAINT hdck_fk FOREIGN KEY (MaCK) REFERENCES CHIETKHAU(MaCK),
+CONSTRAINT hdnv_fk FOREIGN KEY (MaNV) REFERENCES NHANVIEN(MaNV),
+CONSTRAINT hdkh_fk FOREIGN KEY (MaKH) REFERENCES KHACHHANG(MaKH));
+
+drop table HOADON;
+
+DROP TABLE HOADON CASCADE CONSTRAINTS;
+
+------------------------------------------------------------------------------------------
+--- 7. Tao bang KHÁCH HÀNG
+CREATE TABLE KHACHHANG
+(
+ MaKH nvarchar2(20),
+ TenKH nvarchar2(30),
+ SdtKH number,
+ DiachiKH nvarchar2(30),
+CONSTRAINT kh_pk PRIMARY KEY (MaKH));
+
+drop table KHACHHANG;
+
+DROP TABLE KHACHHANG CASCADE CONSTRAINTS; 
+-----------------------------------------------
+--- 8. Tao bang DANH GIA
+CREATE TABLE DANHGIA
+( MaKH nvarchar2(20) ,
+  MaSach nvarchar2(20) ,
+  Loidanhgia nvarchar2(20) ,
+  Ngaydanhgia date ,
+CONSTRAINT dg_pk PRIMARY KEY (MaKH,MaSach),
+CONSTRAINT dgs_fk FOREIGN KEY (MaSach) REFERENCES Sach (MaSach),
+CONSTRAINT dgkh_fk FOREIGN KEY (MaKH) REFERENCES KHACHHANG(MAKH));
+
+-----------------------------------------------------------------------------
+--- 9. Tao bang CHIET KHAU
+CREATE TABLE CHIETKHAU
+(
+ MaCK nvarchar2(20)
+ CONSTRAINT ck_pk PRIMARY KEY ,
+ TenCK nvarchar2(20),
+ PhanTramCK number );
+
+-------------------------------------------------------------
+--B?ng NHÂN VIÊN
+CREATE TABLE NHANVIEN
+(
+ MaNV nvarchar2(20),
+ TenNV nvarchar2(25),
+ DiachiNV nvarchar2(30),
+ SdtNV nvarchar2(30),
+CONSTRAINT nv_pk PRIMARY KEY(MaNV));
+
+----------------------------------------------------------------------------------------
+/*--B?ng CÓ
+create table CO
+( MaKH nvarchar2(20) ,
+  MaCK nvarchar2(20) ,
+CONSTRAINT Co_pk PRIMARY KEY (MaKH,MaCK),
+CONSTRAINT ckc_fk FOREIGN KEY (MaCK) REFERENCES CHIETKHAU(MACK),
+CONSTRAINT khc_fk FOREIGN KEY (MaKH) REFERENCES KHACHHANG(MAKH));
+
+drop table CO; */
+ 
+------ Nhap du lieu
+--- Nhap du lieu bang TACGIA
+insert into tacgia ( MaTG , TenTG , ThongTinLL )
+  values ( 'tg1' , ' Vu Thi Binh ' , '09011111');
+insert into tacgia ( MaTG , TenTG , ThongTinLL )
+  values ( 'tg2' , ' Luu Ngoc Duc ' , '09011112');
+insert into tacgia ( MaTG , TenTG , ThongTinLL )
+  values ( 'tg3' , ' Tran Thu Ha ' , '09011113');
+insert into tacgia ( MaTG , TenTG , ThongTinLL )
+  values ( 'tg4' , ' Dang Thi Hang ' , '09011114');
+insert into tacgia ( MaTG , TenTG , ThongTinLL )
+  values ( 'tg5' , ' Ha Thi Hien' , '09011115');
+insert into tacgia ( MaTG , TenTG , ThongTinLL )
+  values ( 'tg6' , ' Dinh Thuy Hien ' , '09011116');
+insert into tacgia ( MaTG , TenTG , ThongTinLL )
+  values ( 'tg7' , ' Hoang Thi Hue ' , '09011117');
+insert into tacgia ( MaTG , TenTG , ThongTinLL )
+  values ( 'tg8' , ' Le Viet Hung ' , '09011118');
+insert into tacgia ( MaTG , TenTG , ThongTinLL )
+  values ( 'tg9' , ' Tran Viet Hung ' , '09011119');
+insert into tacgia ( MaTG , TenTG , ThongTinLL )
+  values ( 'tg10' ,' Pham Quang Huy ' , '090111110');
+  
+---Nhap du lieu bang THELOAI
+insert into theloai ( MaTheLoai , TenTheLoai ) 
+  values ( 'ct1', ' chinhtri');
+insert into theloai ( MaTheLoai , TenTheLoai ) 
+  values ( 'pl2', ' phapluat');
+insert into theloai ( MaTheLoai , TenTheLoai ) 
+  values ( 'cn3', ' congnghe');
+insert into theloai ( MaTheLoai , TenTheLoai ) 
+  values ( 'kt4', ' kinhte');
+insert into theloai ( MaTheLoai , TenTheLoai ) 
+  values ( 'nght5', ' nghethuat');
+insert into theloai ( MaTheLoai , TenTheLoai ) 
+  values ( 'xh6', ' xahoi');
+insert into theloai ( MaTheLoai , TenTheLoai ) 
+  values ( 'ls7', ' lichsu');
+insert into theloai ( MaTheLoai , TenTheLoai ) 
+  values ( 'tt8', ' tieuthuyet');
+insert into theloai ( MaTheLoai , TenTheLoai ) 
+  values ( 'tl9', ' tamli');
+insert into theloai ( MaTheLoai , TenTheLoai ) 
+  values ( 'tn10', ' thieunhi');
+
+---Nhap du lieu bang NHAXUATBAN
+insert into nhaxuatban ( MaNXB , TenNXB , DiaChiNXB ) 
+  values ( 'NXB001', ' giaothongvantai ' , ' HoanKiem HaNoi ' );
+insert into nhaxuatban ( MaNXB , TenNXB , DiaChiNXB ) 
+  values ( 'NXB002', ' laodong ' , ' DongDa HaNoi ' );
+insert into nhaxuatban ( MaNXB , TenNXB , DiaChiNXB ) 
+  values ( 'NXB003', ' thongtinvatruyenthong ' , ' TranDuyHung HaNoi ' );
+insert into nhaxuatban ( MaNXB , TenNXB , DiaChiNXB ) 
+  values ( 'NXB004', ' tuphap ' , ' HoanKiem HaNoi ' );
+insert into nhaxuatban ( MaNXB , TenNXB , DiaChiNXB ) 
+  values ( 'NXB005', ' hoinhavan ' , ' NguyenDu HaNoi ' );
+insert into nhaxuatban ( MaNXB , TenNXB , DiaChiNXB ) 
+  values ( 'NXB006', ' giaoduc ' , ' TranHungDao HaNoi ' );
+insert into nhaxuatban ( MaNXB , TenNXB , DiaChiNXB ) 
+  values ( 'NXB007', ' chinhtriquocgia ' , ' CauGiay HaNoi ' );
+insert into nhaxuatban ( MaNXB , TenNXB , DiaChiNXB ) 
+  values ( 'NXB008', ' hochiminh ' , ' Quan1 HoChiMinh ' );
+insert into nhaxuatban ( MaNXB , TenNXB , DiaChiNXB ) 
+  values ( 'NXB009', ' tre ' , ' Quan3 HoChiMinh ' );
+insert into nhaxuatban ( MaNXB , TenNXB , DiaChiNXB ) 
+  values ( 'NXB0010', ' kimdong ' , ' HaiBaTrung HaNoi ' );
+
+--- Nhap du lieu bang Sach 
+insert into sach ( MaSach , TenSach , GiaSach , NamXB , MaTG , MaTheLoai , MaNXB ) 
+  values ( 'S1001' , ' conan ' , 10000 , to_date( '1/1/2013 ','dd/mm/yy'), 'tg1' , 'ct1', 'NXB001' ); 
+insert into sach ( MaSach , TenSach , GiaSach , NamXB , MaTG , MaTheLoai , MaNXB ) 
+  values ( 'S1002' , ' doraemon ' , 11000 , to_date( '5/7/2013 ','dd/mm/yy'), 'tg1' , 'pl2', 'NXB002' ); 
+insert into sach ( MaSach , TenSach , GiaSach , NamXB , MaTG , MaTheLoai , MaNXB ) 
+  values ( 'S1003' , ' shin ' , 15000 , to_date( '1/7/2015 ','dd/mm/yy'), 'tg1' , 'cn3', 'NXB003' );   
+insert into sach ( MaSach , TenSach , GiaSach , NamXB , MaTG , MaTheLoai , MaNXB ) 
+  values ( 'S1004' , ' naruto ' , 10000 , to_date( '1/2/2013 ','dd/mm/yy'), 'tg2' , 'kt4', 'NXB004' );   
+insert into sach ( MaSach , TenSach , GiaSach , NamXB , MaTG , MaTheLoai , MaNXB ) 
+  values ( 'S1005' , ' songoku ' , 16000 , to_date( '10/1/2015 ','dd/mm/yy'), 'tg2' , 'nght5', 'NXB004' );   
+insert into sach ( MaSach , TenSach , GiaSach , NamXB , MaTG , MaTheLoai , MaNXB ) 
+  values ( 'S1006' , ' blackcover ' , 15000 , to_date( '1/10/2014 ','dd/mm/yy'), 'tg3' , 'nght5', 'NXB005' );   
+insert into sach ( MaSach , TenSach , GiaSach , NamXB , MaTG , MaTheLoai , MaNXB ) 
+  values ( 'S1007' , ' onepice ' , 11000 , to_date( '13/2/2012 ','dd/mm/yy'), 'tg4' , 'xh6', 'NXB006' );   
+insert into sach ( MaSach , TenSach , GiaSach , NamXB , MaTG , MaTheLoai , MaNXB ) 
+  values ( 'S1008' , ' onepacman ' , 20000 , to_date( '14/1/2013 ','dd/mm/yy'), 'tg4' , 'nght5', 'NXB004' ); 
+insert into sach ( MaSach , TenSach , GiaSach , NamXB , MaTG , MaTheLoai , MaNXB ) 
+  values ( 'S1009' , ' nihon ' , 100000 , to_date( '1/1/2020 ','dd/mm/yy'), 'tg5' , 'xh6', 'NXB007' ); 
+insert into sach ( MaSach , TenSach , GiaSach , NamXB , MaTG , MaTheLoai , MaNXB ) 
+  values ( 'S10010' , ' katakana ' , 30000 , to_date( '1/10/2020 ','dd/mm/yy'), 'tg6' , 'ls7', 'NXB007' ); 
+insert into sach ( MaSach , TenSach , GiaSach , NamXB , MaTG , MaTheLoai , MaNXB ) 
+  values ( 'S10011' , ' katakana ' , 35000 , to_date( '6/10/2022 ','dd/mm/yy'), 'tg7' , 'tt8', 'NXB007' ); 
+insert into sach ( MaSach , TenSach , GiaSach , NamXB , MaTG , MaTheLoai , MaNXB ) 
+  values ( 'S10012' , ' katakana ' , 42000 , to_date( '9/10/2019 ','dd/mm/yy'), 'tg8' , 'tl9', 'NXB007' );  
+insert into sach ( MaSach , TenSach , GiaSach , NamXB , MaTG , MaTheLoai , MaNXB ) 
+  values ( 'S10013' , ' katakana ' , 37000 , to_date( '17/10/2013 ','dd/mm/yy'), 'tg9' , 'tn10', 'NXB008' );   
+insert into sach ( MaSach , TenSach , GiaSach , NamXB , MaTG , MaTheLoai , MaNXB ) 
+  values ( 'S10014' , ' shin ' , 39000 , to_date( '1/10/2020 ','dd/mm/yy'), 'tg6' , 'tn10', 'NXB009' );   
+insert into sach ( MaSach , TenSach , GiaSach , NamXB , MaTG , MaTheLoai , MaNXB ) 
+  values ( 'S10015' , ' conan ' , 50000 , to_date( '12/10/2020 ','dd/mm/yy'), 'tg10' , 'tl9', 'NXB0010' );   
+  
+---Nhap du lieu bang NHANVIEN 
+insert into nhanvien ( MaNV , TenNV , DiachiNV , SdtNV ) 
+  values ( '23A101 ' , ' Ho Ngoc Ha ' , ' ThanhXuan HaNoi ' , ' 09000121');
+insert into nhanvien ( MaNV , TenNV , DiachiNV , SdtNV ) 
+  values ( '23A102 ' , ' Bui Anh Tuan ' , ' ThanhXuan BacNinh ' , ' 09000122'); 
+insert into nhanvien ( MaNV , TenNV , DiachiNV , SdtNV ) 
+  values ( '23A103 ' , ' Luong Minh Phuong ' , ' BaDinh HaNoi ' , ' 09000123');
+insert into nhanvien ( MaNV , TenNV , DiachiNV , SdtNV ) 
+  values ( '23A104 ' , ' Le Quang Hieu ' , ' LuongTai BacNinh ' , ' 09000124');  
+insert into nhanvien ( MaNV , TenNV , DiachiNV , SdtNV ) 
+  values ( '23A105 ' , ' Nguyen Thu Phuong ' , ' HuuLung LangSon ' , ' 09000125');  
+insert into nhanvien ( MaNV , TenNV , DiachiNV , SdtNV ) 
+  values ( '23A106 ' , ' Bui Tien Dung ' , ' QueVo BacNinh ' , ' 09000126');  
+insert into nhanvien ( MaNV , TenNV , DiachiNV , SdtNV ) 
+  values ( '23A107 ' , ' Que Ngoc Hai ' , ' HoGuom HaNoi ' , ' 09000127');  
+insert into nhanvien ( MaNV , TenNV , DiachiNV , SdtNV ) 
+  values ( '23A108 ' , ' Nguyen Thuy Nga ' , ' KhamThien HaNoi ' , ' 09000128');  
+insert into nhanvien ( MaNV , TenNV , DiachiNV , SdtNV ) 
+  values ( '23A109 ' , ' Pham Thu Phuong ' , ' BaDinh HaNoi ' , ' 09000129');  
+insert into nhanvien ( MaNV , TenNV , DiachiNV , SdtNV ) 
+  values ( '23A1010 ' , ' Pham Thu Phuong ' , ' LuongTai BacNinh ' , ' 090001210'); 
+  
+---  Nhap du lieu cho bang CHIETKHAU
+insert into chietkhau ( MaCK , TenCK , PhanTramCK ) 
+  values ( 'CKJA ' , ' nhatbanmot ' , 10 );
+insert into chietkhau ( MaCK , TenCK , PhanTramCK ) 
+  values ( 'CKJB ' , ' nhatbanhai ' , 20 );
+insert into chietkhau ( MaCK , TenCK , PhanTramCK ) 
+  values ( 'CKJC ' , ' nhatbanba ' , 30 );
+insert into chietkhau ( MaCK , TenCK , PhanTramCK ) 
+  values ( 'CKJD ' , ' nhatbanbon ' , 40 );
+insert into chietkhau ( MaCK , TenCK , PhanTramCK ) 
+  values ( 'CKJE ' , ' nhatbannam ' , 50 );
+insert into chietkhau ( MaCK , TenCK , PhanTramCK ) 
+  values ( 'CKJF ' , ' nhatbansau ' , 35 );
+insert into chietkhau ( MaCK , TenCK , PhanTramCK ) 
+  values ( 'CKJG ' , ' nhatbanbay ' , 45 );
+insert into chietkhau ( MaCK , TenCK , PhanTramCK ) 
+  values ( 'CKJH ' , ' nhatbantam ' , 75 );
+insert into chietkhau ( MaCK , TenCK , PhanTramCK ) 
+  values ( 'CKJI ' , ' nhatbanchin ' , 89 );
+insert into chietkhau ( MaCK , TenCK , PhanTramCK ) 
+  values ( 'CKJJ ' , ' nhatbanmuoi ' , 99 );
+
+---Nhap du lieu vao bang KHACHHANG 
+insert into khachhang ( MaKH , TenKH , sdtKH , DiachiKH ) 
+  values ( 'KHI' , ' Nguyen Van An ' , 099001 , ' HaiPhong ');
+insert into khachhang ( MaKH , TenKH , sdtKH , DiachiKH ) 
+  values ( 'KHII' , ' Tran Viet Anh ' , 099002 , ' HaiDuong ');
+insert into khachhang ( MaKH , TenKH , sdtKH , DiachiKH ) 
+  values ( 'KHIII' , ' Le Thanh Huong ' , 099003 , ' BacGiang ');
+insert into khachhang ( MaKH , TenKH , sdtKH , DiachiKH ) 
+  values ( 'KHIV' , ' Le Thi Huyen ' , 099004 , ' HaNoi '); 
+insert into khachhang ( MaKH , TenKH , sdtKH , DiachiKH ) 
+  values ( 'KHV' , ' Dao Duy Tuan ' , 099005 , ' NamDinh ');  
+insert into khachhang ( MaKH , TenKH , sdtKH , DiachiKH ) 
+  values ( 'KHVI' , ' Tran Le Khanh ' , 099006 , ' LaoCai ');  
+insert into khachhang ( MaKH , TenKH , sdtKH , DiachiKH ) 
+  values ( 'KHVII' , ' Dao Quoc Viet ' , 099007 , ' HaNoi '); 
+insert into khachhang ( MaKH , TenKH , sdtKH , DiachiKH ) 
+  values ( 'KHVIII' , ' Nguyen Thi Tu ' , 099008 , ' BacGiang ');  
+insert into khachhang ( MaKH , TenKH , sdtKH , DiachiKH ) 
+  values ( 'KHIX' , ' Nguyen Tuan Thanh ' , 099009 , ' LangSon '); 
+insert into khachhang ( MaKH , TenKH , sdtKH , DiachiKH ) 
+  values ( 'KHX' , ' Hoang Hai Ha ' , 0990010 , ' BacNinh ');  
+  
+--- Nhap du lieu bang DANHGIA
+insert into danhgia ( MaKH , MaSach , Ngaydanhgia , Loidanhgia ) 
+  values ('KHI' , 'S1001' , to_date('3/2/2019' , 'dd/mm/yy') , 'RatHay' );
+insert into danhgia ( MaKH , MaSach , Ngaydanhgia , Loidanhgia ) 
+  values ('KHII' , 'S1002' , to_date('3/2/2019' , 'dd/mm/yy') , 'CucHay' );
+insert into danhgia ( MaKH , MaSach , Ngaydanhgia , Loidanhgia ) 
+  values ('KHII' , 'S1003' , to_date('3/2/2019' , 'dd/mm/yy') , 'KhongHay' );
+insert into danhgia ( MaKH , MaSach , Ngaydanhgia , Loidanhgia ) 
+  values ('KHII' , 'S1004' , to_date('3/2/2019' , 'dd/mm/yy') , 'BinhThuong' );
+insert into danhgia ( MaKH , MaSach , Ngaydanhgia , Loidanhgia ) 
+  values ('KHIII' , 'S1005' , to_date('3/2/2019' , 'dd/mm/yy') , 'RatHay' );
+insert into danhgia ( MaKH , MaSach , Ngaydanhgia , Loidanhgia ) 
+  values ('KHIII' , 'S1006' , to_date('3/2/2019' , 'dd/mm/yy') , 'Hay' );
+insert into danhgia ( MaKH , MaSach , Ngaydanhgia , Loidanhgia ) 
+  values ('KHIV' , 'S1007' , to_date('3/2/2019' , 'dd/mm/yy') , 'RatHay' );
+insert into danhgia ( MaKH , MaSach , Ngaydanhgia , Loidanhgia ) 
+  values ('KHV' , 'S1008' , to_date('3/2/2019' , 'dd/mm/yy') , 'CucHay' );
+insert into danhgia ( MaKH , MaSach , Ngaydanhgia , Loidanhgia ) 
+  values ('KHVI' , 'S1009' , to_date('3/2/2019' , 'dd/mm/yy') , 'Hay' );
+insert into danhgia ( MaKH , MaSach , Ngaydanhgia , Loidanhgia ) 
+  values ('KHVII' , 'S10010' , to_date('3/2/2019' , 'dd/mm/yy') , 'BinhThuong' );
+insert into danhgia ( MaKH , MaSach , Ngaydanhgia , Loidanhgia ) 
+  values ('KHVIII' , 'S10011' , to_date('3/2/2019' , 'dd/mm/yy') , 'KhongHay' );
+insert into danhgia ( MaKH , MaSach , Ngaydanhgia , Loidanhgia ) 
+  values ('KHIX' , 'S10012' , to_date('3/2/2019' , 'dd/mm/yy') , 'KhongHay' );
+insert into danhgia ( MaKH , MaSach , Ngaydanhgia , Loidanhgia ) 
+  values ('KHX' , 'S1008' , to_date('3/2/2019' , 'dd/mm/yy') , 'RatHay' );
+insert into danhgia ( MaKH , MaSach , Ngaydanhgia , Loidanhgia ) 
+  values ('KHX' , 'S10013' , to_date('3/2/2019' , 'dd/mm/yy') , 'KhongHay' );
+insert into danhgia ( MaKH , MaSach , Ngaydanhgia , Loidanhgia ) 
+  values ('KHV' , 'S10014' , to_date('3/2/2019' , 'dd/mm/yy') , 'KhongHay' );
+insert into danhgia ( MaKH , MaSach , Ngaydanhgia , Loidanhgia ) 
+  values ('KHVI' , 'S10015' , to_date('3/2/2019' , 'dd/mm/yy') , 'Hay' );
+insert into danhgia ( MaKH , MaSach , Ngaydanhgia , Loidanhgia ) 
+  values ('KHVIII' , 'S10010' , to_date('3/2/2019' , 'dd/mm/yy') , 'CucHay' );
+insert into danhgia ( MaKH , MaSach , Ngaydanhgia , Loidanhgia ) 
+  values ('KHIV' , 'S1006' , to_date('3/2/2019' , 'dd/mm/yy') , 'KhongHay' );
+insert into danhgia ( MaKH , MaSach , Ngaydanhgia , Loidanhgia ) 
+  values ('KHIII' , 'S1006' , to_date('3/2/2019' , 'dd/mm/yy') , 'BinhThuong' );
+insert into danhgia ( MaKH , MaSach , Ngaydanhgia , Loidanhgia ) 
+  values ('KHV' , 'S1009' , to_date('3/2/2019' , 'dd/mm/yy') , 'RatHay' );
+insert into danhgia ( MaKH , MaSach , Ngaydanhgia , Loidanhgia ) 
+  values ('KHIX' , 'S1003' , to_date('3/2/2019' , 'dd/mm/yy') , 'CucHay' );
+insert into danhgia ( MaKH , MaSach , Ngaydanhgia , Loidanhgia ) 
+  values ('KHVIII' , 'S10012' , to_date('3/2/2019' , 'dd/mm/yy') , 'Hay' );
+insert into danhgia ( MaKH , MaSach , Ngaydanhgia , Loidanhgia ) 
+  values ('KHI' , 'S1007' , to_date('3/2/2019' , 'dd/mm/yy') , 'RatHay' );
+insert into danhgia ( MaKH , MaSach , Ngaydanhgia , Loidanhgia ) 
+  values ('KHVII' , 'S1006' , to_date('3/2/2019' , 'dd/mm/yy') , 'BinhThuong' );
+insert into danhgia ( MaKH , MaSach , Ngaydanhgia , Loidanhgia ) 
+  values ('KHIV' , 'S10010' , to_date('3/2/2019' , 'dd/mm/yy') , 'CucHay' );
+insert into danhgia ( MaKH , MaSach , Ngaydanhgia , Loidanhgia ) 
+  values ('KHIX' , 'S10010' , to_date('3/2/2019' , 'dd/mm/yy') , 'KhongHay' ); 
+
+  
+--- Nhap du lieu bang  HOADON
+insert into hoadon (MaHD , Ngaylap , MaNV , MaKH , MaCK ) 
+  values ( 'HD001 ', to_date ('2/2/2020' , 'dd/mm/yy') , '23A101 ', 'KHI' , 'CKJA ');
+insert into hoadon (MaHD , Ngaylap , MaNV , MaKH , MaCK ) 
+  values ( 'HD002 ', to_date ('2/3/2020' , 'dd/mm/yy') , '23A102 ', 'KHIII' , 'CKJB '); 
+insert into hoadon (MaHD , Ngaylap , MaNV , MaKH , MaCK ) 
+  values ( 'HD003 ', to_date ('20/5/2020' , 'dd/mm/yy') , '23A103 ', 'KHII' , 'CKJC '); 
+insert into hoadon (MaHD , Ngaylap , MaNV , MaKH , MaCK ) 
+  values ( 'HD004 ', to_date ('4/7/2021' , 'dd/mm/yy') , '23A104 ', 'KHIV' , 'CKJD ');
+insert into hoadon (MaHD , Ngaylap , MaNV , MaKH , MaCK ) 
+  values ( 'HD005 ', to_date ('2/2/2020' , 'dd/mm/yy') , '23A105 ', 'KHV' , 'CKJJ ');  
+insert into hoadon (MaHD , Ngaylap , MaNV , MaKH , MaCK ) 
+  values ( 'HD006 ', to_date ('25/2/2022' , 'dd/mm/yy') , '23A106 ', 'KHVI' , 'CKI '); 
+insert into hoadon (MaHD , Ngaylap , MaNV , MaKH , MaCK ) 
+  values ( 'HD007 ', to_date ('23/2/2021' , 'dd/mm/yy') , '23A107 ', 'KHVII' , 'CKJG ');  
+insert into hoadon (MaHD , Ngaylap , MaNV , MaKH , MaCK ) 
+  values ( 'HD008 ', to_date ('20/5/2020' , 'dd/mm/yy') , '23A108 ', 'KHVIII' , 'CKJH '); 
+insert into hoadon (MaHD , Ngaylap , MaNV , MaKH , MaCK ) 
+  values ( 'HD009 ', to_date ('2/8/2021' , 'dd/mm/yy') , '23A109 ', 'KHIX' , 'CKJF '); 
+insert into hoadon (MaHD , Ngaylap , MaNV , MaKH , MaCK ) 
+  values ( 'HD0010 ', to_date ('3/5/2022' , 'dd/mm/yy') , '23A1010 ', 'KHX' , 'CKJE '); 
+insert into hoadon (MaHD , Ngaylap , MaNV , MaKH , MaCK ) 
+  values ( 'HD0011 ', to_date ('3/9/2019' , 'dd/mm/yy') , '23A101 ', 'KHII' , 'CKJB '); 
+insert into hoadon (MaHD , Ngaylap , MaNV , MaKH , MaCK ) 
+  values ( 'HD0012 ', to_date ('20/2/2019' , 'dd/mm/yy') , '23A101 ', 'KHIII' , 'CKJC ');
+insert into hoadon (MaHD , Ngaylap , MaNV , MaKH , MaCK ) 
+  values ( 'HD0013 ', to_date ('20/5/2019' , 'dd/mm/yy') , '23A106 ', 'KHIX' , 'CKJH ');  
+insert into hoadon (MaHD , Ngaylap , MaNV , MaKH , MaCK ) 
+  values ( 'HD0014 ', to_date ('30/2/2018' , 'dd/mm/yy') , '23A108 ', 'KHV' , 'CKJC ');  
+insert into hoadon (MaHD , Ngaylap , MaNV , MaKH , MaCK ) 
+  values ( 'HD0015 ', to_date ('20/9/2022' , 'dd/mm/yy') , '23A106 ', 'KHVI' , 'CKJF ');
+insert into hoadon (MaHD , Ngaylap , MaNV , MaKH , MaCK ) 
+  values ( 'HD0016 ', to_date ('30/3/2022' , 'dd/mm/yy') , '23A104 ', 'KHII' , 'CKJG ');  
+insert into hoadon (MaHD , Ngaylap , MaNV , MaKH , MaCK ) 
+  values ( 'HD0017 ', to_date ('25/2/2019' , 'dd/mm/yy') , '23A106 ', 'KHX' , 'CKJJ ');  
+insert into hoadon (MaHD , Ngaylap , MaNV , MaKH , MaCK ) 
+  values ( 'HD0018 ', to_date ('25/2/2020' , 'dd/mm/yy') , '23A1010 ', 'KHVIII' , 'CKJD ');  
+insert into hoadon (MaHD , Ngaylap , MaNV , MaKH , MaCK ) 
+  values ( 'HD0019 ', to_date ('29/2/2021' , 'dd/mm/yy') , '23A108 ', 'KHIV' , 'CKJE ');  
+insert into hoadon (MaHD , Ngaylap , MaNV , MaKH , MaCK ) 
+  values ( 'HD0020 ', to_date ('20/2/2018' , 'dd/mm/yy') , '23A105 ', 'KHIII' , 'CKJC ');  
+
+---Nhap du lieu bang CHITIETHOADON 
+insert into chitiethoadon ( MaSach , MaHD , SLBan , TongTien ) 
+  values ( 'S1001' , 'HD001 ' , 3 , 40000 );
+insert into chitiethoadon ( MaSach , MaHD , SLBan , TongTien ) 
+  values ( 'S1002' , 'HD001 ' , 4 , 56000 );  
+insert into chitiethoadon ( MaSach , MaHD , SLBan , TongTien ) 
+  values ( 'S1003' , 'HD001 ' , 2 , 45000 );  
+insert into chitiethoadon ( MaSach , MaHD , SLBan , TongTien ) 
+  values ( 'S1004' , 'HD001 ' , 2 , 34000 ); 
+insert into chitiethoadon ( MaSach , MaHD , SLBan , TongTien ) 
+  values ( 'S1005' , 'HD001 ' , 5 , 60000 );  
+insert into chitiethoadon ( MaSach , MaHD , SLBan , TongTien ) 
+  values ( 'S1006' , 'HD002 ' , 3 , 40000 ); 
+insert into chitiethoadon ( MaSach , MaHD , SLBan , TongTien ) 
+  values ( 'S1007' , 'HD002 ' , 1 , 10000 );
+insert into chitiethoadon ( MaSach , MaHD , SLBan , TongTien ) 
+  values ( 'S1008' , 'HD003 ' , 5 , 100000 ); 
+insert into chitiethoadon ( MaSach , MaHD , SLBan , TongTien ) 
+  values ( 'S1009' , 'HD004 ' , 9 , 1470000 ); 
+insert into chitiethoadon ( MaSach , MaHD , SLBan , TongTien ) 
+  values ( 'S10010' , 'HD005 ' , 6 , 590000 ); 
+insert into chitiethoadon ( MaSach , MaHD , SLBan , TongTien ) 
+  values ( 'S10011' , 'HD005 ' , 7 , 790000 );   
+insert into chitiethoadon ( MaSach , MaHD , SLBan , TongTien ) 
+  values ( 'S10012' , 'HD005 ' , 3 , 990000 ); 
+insert into chitiethoadon ( MaSach , MaHD , SLBan , TongTien ) 
+  values ( 'S10013' , 'HD006 ' , 6 , 790000 );  
+insert into chitiethoadon ( MaSach , MaHD , SLBan , TongTien ) 
+  values ( 'S10014' , 'HD006 ' , 2 , 190000 );  
+insert into chitiethoadon ( MaSach , MaHD , SLBan , TongTien ) 
+  values ( 'S10015' , 'HD007 ' , 4 , 590000 );   
+insert into chitiethoadon ( MaSach , MaHD , SLBan , TongTien ) 
+  values ( 'S10011' , 'HD008 ' , 5 , 1590000 );  
+insert into chitiethoadon ( MaSach , MaHD , SLBan , TongTien ) 
+  values ( 'S10014' , 'HD009 ' , 4 , 390000 );  
+insert into chitiethoadon ( MaSach , MaHD , SLBan , TongTien ) 
+  values ( 'S1009' , 'HD0010 ' , 3 , 670000 ); 
+insert into chitiethoadon ( MaSach , MaHD , SLBan , TongTien ) 
+  values ( 'S1007' , 'HD0011 ' , 1 , 70000 ); 
+insert into chitiethoadon ( MaSach , MaHD , SLBan , TongTien ) 
+  values ( 'S1002' , 'HD0011 ' , 5 , 730000 );  
+insert into chitiethoadon ( MaSach , MaHD , SLBan , TongTien ) 
+  values ( 'S1009' , 'HD0011 ' , 5 , 100000 );  
+insert into chitiethoadon ( MaSach , MaHD , SLBan , TongTien ) 
+  values ( 'S1004' , 'HD0012 ' , 6 , 200000 );  
+insert into chitiethoadon ( MaSach , MaHD , SLBan , TongTien ) 
+  values ( 'S1007' , 'HD0013 ' , 10 , 6700000 ); 
+insert into chitiethoadon ( MaSach , MaHD , SLBan , TongTien ) 
+  values ( 'S1005' , 'HD0014 ' , 2 , 980000 ); 
+insert into chitiethoadon ( MaSach , MaHD , SLBan , TongTien ) 
+  values ( 'S1006' , 'HD0014 ' , 6 , 100000 );  
+insert into chitiethoadon ( MaSach , MaHD , SLBan , TongTien ) 
+  values ( 'S10013' , 'HD0015 ' , 4 , 280000 ); 
+insert into chitiethoadon ( MaSach , MaHD , SLBan , TongTien ) 
+  values ( 'S10011' , 'HD0016 ' , 4 , 1980000 ); 
+insert into chitiethoadon ( MaSach , MaHD , SLBan , TongTien ) 
+  values ( 'S1001' , 'HD0017 ' , 3 , 480000 ); 
+insert into chitiethoadon ( MaSach , MaHD , SLBan , TongTien ) 
+  values ( 'S1002' , 'HD0018 ' , 4 , 180000 ); 
+insert into chitiethoadon ( MaSach , MaHD , SLBan , TongTien ) 
+  values ( 'S1006' , 'HD0018 ' , 2 , 280000 );
+insert into chitiethoadon ( MaSach , MaHD , SLBan , TongTien ) 
+  values ( 'S1009' , 'HD0018 ' , 1 ,80000 );
+insert into chitiethoadon ( MaSach , MaHD , SLBan , TongTien ) 
+  values ( 'S1004' , 'HD0019 ' , 6 ,880000 );  
+insert into chitiethoadon ( MaSach , MaHD , SLBan , TongTien ) 
+  values ( 'S1008' , 'HD0020 ' , 5 ,380000 ); 
+  
+-----TRUY VAN------------
+--- 1. Cho biet cac masach , tensach , giasach co loi danh gia la 'Hay' 'RatHay' 'CucHay' 
+SELECT MaSach , TenSach , GiaSach , LoiDanhGia
+FROM Sach JOIN DanhGia USING ( MaSach ) 
+WHERE loidanhgia IN ( 'Hay' , 'RatHay' , 'CucHay');
+
+--- 2. Cho biet thong tin hoa don ma khach hang ten 'Le Thanh Huong' da mua 
+SELECT MaHD , NgayLap , TongTien , MaNV , MaKH , MaCK 
+FROM HoaDon JOIN KhachHang USING ( MaKH ) 
+WHERE TenKH = 'Le Thanh Huong';
+
+--- 3. Cho biet thong tin cac sach tac gia 'Vu Thi Binh' da viet trong nam 2013
+SELECT MaSach , TenSach , GiaSach , MaTG , MaTheLoai , MaNXB
+FROM SACH JOIN TACGIA USING (MaTG) 
+WHERE EXTRACT ( year from sach.namxb ) = '2013' AND TenTG = 'Vu Thi Binh' ;
+
+--- 4. Cho biet masach , tensach cac sach chua ban duoc 
+SELECT MaSach , TenSach 
+FROM SACH 
+WHERE MaSach NOT IN ( SELECT MaSach FROM ChiTietHoaDon ) ;
+
+--- 5. cho biet thong tin ma chiet khau giam gia duoc nhieu nhat
+SELECT MaCK , TenCK , PhanTramCK 
+FROM ChietKhau 
+WHERE PhanTramCK IN ( SELECT Max (PhanTramCK ) FROM ChietKhau ) ;
+
+--- 6. Cho biet thong tin cua cac nhan vien lap hoa don cho khach hang co ten 'Le Thi Huyen'
+SELECT NhanVien.MaNV , TenNV , DiaChiNV , SdtNV 
+FROM HoaDon 
+INNER JOIN NhanVien ON HoaDon.MaNV = NhanVien.MaNV 
+INNER JOIN KhachHang ON HoaDon.MaKH = KhachHang.MaKH 
+WHERE TenKH = 'Le Thi Huyen';
+              
+--- 7. cho biet so lan danh gia cua sach có ma 'S1006'
+SELECT tensach , COUNT ( loidanhgia ) " tongsolandanhgia"
+FROM danhgia JOIN sach USING (masach)
+WHERE masach = 'S1006'
+GROUP BY tensach ;
+
+--- 8. Cho biet ten cac the loai nha xuat ban tu phap cung cap 
+SELECT DISTINCT TenTheLoai 
+FROM Sach 
+INNER JOIN TheLoai ON Sach.MaTheLoai = TheLoai.MaTheLoai
+INNER JOIN NhaXuatBan ON Sach.MaNXB = NhaXuatBan.MaNXB 
+WHERE TenNXB = 'tuphap';
+
+--- 9. Cho biet thong tin sach co gia ban lon nhat 
+SELECT Sach.MaSach , TenSach ,GiaSach , NamXB , MaTG , MaTheLoai , MaNXB 
+FROM Sach
+WHERE GiaSach >= ALL ( SELECT GiaSach FROM Sach ) ;
+
+--- 10. Cho biet tong so luong sach da ban cua cuon sach 'doraemon'
+SELECT TenSach , COUNT (SLBan) "tong so luong ban" 
+FROM ChiTietHoaDon JOIN Sach USING (MaSach)
+WHERE TenSach = 'doraemon'
+GROUP BY TenSach;
+
+-------------------------------------------------------------------------------
+----- 10 yêu c?u NGIEP VU ch?c n?ng phù h?p
+--1  nhap vao ho ten cua mot nhan vien cho biet nhan vien do co trong CSDL ko ?
+SET SERVEROUTPUT ON
+DECLARE
+    ten_nhan_vien  NHANVIEN.TenNV%TYPE;
+    thong_bao nvarchar2(30);
+BEGIN
+    ten_nhan_vien := '&ten_nhan_vien';
+    FOR item IN (Select TenNV from NHANVIEN)
+    LOOP
+        IF(ten_nhan_vien = item.TenNV)then thong_bao := 'Co ton tai'; exit;
+        ELSE thong_bao := 'Khong ton tai'; 
+        END IF;
+    END LOOP;
+    dbms_output.put_line('Thong bao:' || thong_bao);
+END;
+--2 Nhap vao ten tac gia cho biet ten sach cua ho 
+SET SERVEROUTPUT ON
+DECLARE
+    ten_sach NVARCHAR2(20);
+    ten_tac_gia NVARCHAR2(20);
+BEGIN 
+    ten_tac_gia :='&ten_tac_gia';
+    FOR item IN (
+       SELECT TenSach 
+       INTO ten_sach
+       FROM tacgia JOIN sach USING ( matg) 
+       WHERE TenTG = ten_tac_gia )
+    LOOP
+       dbms_output.put_line('ten tac gia la ' || ten_tac_gia || 'ten sach la ' || item.tensach);
+    END LOOP;
+END;
+--3 Nhap vao ten khach hang cho biet tong so hoa don cua khach da mua 
+SET SERVEROUTPUT ON  
+DECLARE 
+   ten_khach_hang nvarchar2(30) ;
+   tong_so_hoa_don nvarchar2(30);
+BEGIN 
+   ten_khach_hang := '&ten_khach_hang';
+   SELECT COUNT( mahd )
+   INTO tong_so_hoa_don 
+   FROM hoadon JOIN khachhang USING ( makh ) 
+   WHERE tenkh = ten_khach_hang ;
+   dbms_output.put_line(' ten khach la ' || ten_khach_hang || ' Tong so hoa don la ' || tong_so_hoa_don );
+END ;
+--4 Them mot nhan vien moi vao bang nhan vien 
+DECLARE 
+    rownv nhanvien%rowtype ; 
+BEGIN 
+    rownv .MaNV :=&MaNV ;
+    rownv .TenNV :=&TenNV ;
+    rownv .DiachiNV :=&DiachiNV ; 
+    rownv .SdtNV :=&SdtNV ;
+    INSERT INTO nhanvien(MaNV,TenNV,DiachiNV,SdtNV)
+    VALUES(rownv .MaNV , rownv .TenNV , rownv .DiachiNV , rownv .SdtNV);
+END;
+
+--5 cho biet danh sach cac nhan vien co que o noi nhap vao 
+SET SERVEROUTPUT ON
+DECLARE
+    dia_chi_nv nvarchar2(30);
+BEGIN
+    dia_chi_nv := '&dia_chi_nv';
+    FOR item IN( SELECT manv,tennv FROM nhanvien WHERE diachinv = dia_chi_nv)
+    LOOP
+       DBMS_OUTPUT.PUT_LINE('nhan vien co ma nhan vien la : '|| item.manv|| 'ten la :'|| item.tennv);
+    END LOOP;
+END;
+
+--6 cho danh sach cac hoa don da lap trong nam 2020 
+SET SERVEROUTPUT ON
+BEGIN
+   FOR item IN (
+     SELECT mahd,ngaylap 
+     FROM hoadon 
+     WHERE EXTRACT ( YEAR FROM ngaylap)=2020)
+   LOOP
+      DBMS_OUTPUT.PUT_LINE('Danh sach hoa don lap nam 2020 la  : '||item.mahd||item.ngaylap);
+   END LOOP;
+END;
+--- 7. Nhap vao ma chiet khau cho biet so luong hoa don co chua ma chiet khau do
+CREATE OR REPLACE FUNCTION
+  Tong_HD(ck chietkhau.mack%type)
+  RETURN NUMBER
+  AS so NUMBER;
+BEGIN
+  SELECT COUNT (MaHD) INTO so FROM hoadon JOIN chietkhau USING ( mack )
+  WHERE mack=ck;
+  RETURN so;
+END;
+ ----- thuc thi
+  SELECT Tong_HD('&ck')FROM dual;
+
+--- 8. Chuong trinh tra ve danh sach nhung quyen Sach duoc xuat ban nam 2020
+SET SERVEROUTPUT ON 
+CREATE OR REPLACE PROCEDURE ds_s 
+IS
+BEGIN
+   FOR item IN(SELECT masach , tensach  FROM sach WHERE EXTRACT(YEAR FROM namxb)=2013)
+   LOOP
+      dbms_output.put_line('sach xuat ban nam 2020 co ma la : ' ||item.masach||' ten sach la: '||item.tensach);
+   END LOOP;
+END;
+   --- THUC THI
+  EXEC ds_s;
+
+--- 9. Dem so sach da ban cua ma sach nhap vao 
+CREATE OR REPLACE FUNCTION 
+  dem_s( ms Sach.MaSach%TYPE)
+  RETURN NUMBER
+  AS TongSoLuong NUMBER;
+BEGIN
+  SELECT SUM (SLBan)INTO TongSoLuong  FROM chitiethoadon  WHERE MaSach=ms;
+  RETURN TongSoLuong;
+END;
+--- THUCTHI
+    SELECT dem_s('S1006') FROM dual;
+--- 10. Tao trigger hien thi ra thông báo moi khi có su thay doi trên bang hoa don 
+CREATE OR REPLACE TRIGGER test_hoa_don
+BEFORE 
+INSERT OR
+UPDATE OF MaHD OR
+UPDATE OF Ngaylap OR
+UPDATE OF Tongtien OR
+UPDATE OF MaNV OR
+UPDATE OF MaKH OR
+UPDATE OF MaCK OR
+DELETE
+ON HOADON
+BEGIN
+    CASE
+    WHEN INSERTING THEN
+        DBMS_OUTPUT.PUT_LINE('Inserting');
+    WHEN UPDATING ('MaHD') THEN
+        DBMS_OUTPUT.PUT_LINE('Updating Ma Hoa Don');
+    WHEN UPDATING ('Ngaylap') THEN
+        DBMS_OUTPUT.PUT_LINE('Updating Ngay lap hoa don');
+     WHEN UPDATING ('Tongtien') THEN
+        DBMS_OUTPUT.PUT_LINE('Updating Tong tien cua hoa don');
+     WHEN UPDATING ('MaNV') THEN
+        DBMS_OUTPUT.PUT_LINE('Updating Ma nhan vien lap hoa don');
+    WHEN UPDATING ('MaKH') THEN
+        DBMS_OUTPUT.PUT_LINE('Updating Ma khach hang cua hoa don');
+    WHEN UPDATING ('MaCK') THEN
+        DBMS_OUTPUT.PUT_LINE('Updating Ma chiet khau cua hoa don');
+    END CASE;
+    END;
+
+-----------------------------
+--Thuc hien quan tri CSDL---
+---Tao TK
+CREATE USER tommi
+IDENTIFIED BY password
+DEFAULT TABLESPACE data_ts
+QUOTA 500K ON data_ts
+QUOTA 100M ON test_ts
+TEMPORARY TABLESPACE temp_ts
+PROFILE xiaomi;
+  
+GRANT CREATE SESSION TO hr WITH ADMIN OPTION;
+  
